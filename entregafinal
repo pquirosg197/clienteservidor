@@ -1,0 +1,70 @@
+/*
+Paulo Josue Quiros Gomez
+114370197
+Programacion Cliente Servidor
+*/
+
+package pauloquirosgomez.avance2.avance2clienteservidor;
+
+import javax.swing.JOptionPane;
+
+public class AppGUI {
+    //pasa a ser la clase MAIN
+    
+
+    public static void main(String[] args) {
+        GestorDatos gestor = new GestorDatos(); // Manejador de datos
+        gestor.cargarDatos(); // Cargar desde archivos si existen
+
+        while (true) {
+            // Menú principal usando JOptionPane
+            String opcion = JOptionPane.showInputDialog("""
+                --- Menú Fidecompro ---
+                1. Registrar cliente regular
+                2. Registrar cliente VIP
+                3. Registrar producto
+                4. Generar factura
+                5. Guardar y salir
+            """);
+
+            if (opcion == null) break; // Si se cancela la ventana
+
+            switch (opcion) {
+                case "1" -> {
+                    // Cliente normal
+                    String nombre = JOptionPane.showInputDialog("Nombre del cliente:");
+                    String cedula = JOptionPane.showInputDialog("Cédula del cliente:");
+                    gestor.agregarCliente(new Cliente(nombre, cedula));
+                }
+                case "2" -> {
+                    // Cliente VIP
+                    String nombre = JOptionPane.showInputDialog("Nombre del cliente VIP:");
+                    String cedula = JOptionPane.showInputDialog("Cédula del cliente:");
+                    double descuento = Double.parseDouble(JOptionPane.showInputDialog("Descuento en %:"));
+                    gestor.agregarCliente(new ClienteVIP(nombre, cedula, descuento));
+                }
+                case "3" -> {
+                    // Registrar producto
+                    String nombre = JOptionPane.showInputDialog("Nombre del producto:");
+                    double precio = Double.parseDouble(JOptionPane.showInputDialog("Precio del producto:"));
+                    gestor.agregarProducto(new Producto(nombre, precio));
+                }
+                case "4" -> {
+                    // Generar factura
+                    String cedula = JOptionPane.showInputDialog("Cédula del cliente:");
+                    String producto = JOptionPane.showInputDialog("Nombre del producto:");
+                    int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Cantidad:"));
+                    double precio = Double.parseDouble(JOptionPane.showInputDialog("Precio unitario:"));
+                    Factura.generar(cedula, producto, cantidad, precio);
+                }
+                case "5" -> {
+                    // Guardar y salir
+                    gestor.guardarDatos();
+                    JOptionPane.showMessageDialog(null, "Datos guardados correctamente.\nGracias por usar Fidecompro.");
+                    System.exit(0);
+                }
+                default -> JOptionPane.showMessageDialog(null, "Opción no válida.");
+            }
+        }
+    }
+}
