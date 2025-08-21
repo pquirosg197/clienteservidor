@@ -1,21 +1,29 @@
 package pauloquirosgomez.avance2.avance2clienteservidor;
 
-// Clase ClienteVIP hereda de Cliente
-public class ClienteVIP extends Cliente {
+import java.io.PrintWriter;
 
-    private double descuento;
+// Clase que genera una factura en un archivo de texto
+public class Factura {
 
-    // Constructor que además recibe un porcentaje de descuento
-    public ClienteVIP(String nombre, String cedula, double descuento) {
-        super(nombre, cedula); // Llamamos al constructor de la clase padre
-        this.descuento = descuento;
-    }
+    // Método estático para generar el archivo de factura
+    public static void generar(String cedulaCliente, String nombreProducto, int cantidad, double precioUnitario) {
+        double total = cantidad * precioUnitario;
 
-    // Método sobrescrito (polimorfismo): muestra la info incluyendo el descuento
-    public String getInfo() {
-        return "Cliente VIP - Nombre: " + nombre + ", Cédula: " + cedula + ", Descuento: " + descuento + "%";
+        try {
+            // El archivo incluirá la cédula del cliente
+            String nombreArchivo = "factura_" + cedulaCliente + ".txt";
+            PrintWriter writer = new PrintWriter(nombreArchivo);
+
+            writer.println("Factura para cliente con cédula: " + cedulaCliente);
+            writer.println("Producto: " + nombreProducto);
+            writer.println("Cantidad: " + cantidad);
+            writer.println("Precio unitario: " + precioUnitario);
+            writer.println("Total a pagar: " + total);
+
+            writer.close(); // Cerramos el archivo
+            System.out.println("Factura generada correctamente.");
+        } catch (Exception e) {
+            System.out.println("Error al generar factura: " + e.getMessage());
+        }
     }
 }
-
-
-
