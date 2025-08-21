@@ -1,29 +1,51 @@
 package pauloquirosgomez.avance2.avance2clienteservidor;
 
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.io.*;
 
-// Clase que genera una factura en un archivo de texto
-public class Factura {
+// Clase que gestiona listas de clientes y productos, y permite guardarlos/cargarlos
+public class GestorDatos {
+    public ArrayList<Cliente> clientes = new ArrayList<>();
+    public ArrayList<Producto> productos = new ArrayList<>();
 
-    // Método estático para generar el archivo de factura
-    public static void generar(String cedulaCliente, String nombreProducto, int cantidad, double precioUnitario) {
-        double total = cantidad * precioUnitario;
+    // Agrega un cliente a la lista
+    public void agregarCliente(Cliente cliente) {
+        clientes.add(cliente);
+    }
 
-        try {
-            // El archivo incluirá la cédula del cliente
-            String nombreArchivo = "factura_" + cedulaCliente + ".txt";
-            PrintWriter writer = new PrintWriter(nombreArchivo);
+    // Agrega un producto a la lista
+    public void agregarProducto(Producto producto) {
+        productos.add(producto);
+    }
 
-            writer.println("Factura para cliente con cédula: " + cedulaCliente);
-            writer.println("Producto: " + nombreProducto);
-            writer.println("Cantidad: " + cantidad);
-            writer.println("Precio unitario: " + precioUnitario);
-            writer.println("Total a pagar: " + total);
-
-            writer.close(); // Cerramos el archivo
-            System.out.println("Factura generada correctamente.");
+    // Guarda los datos en archivos .ser (serialización)
+    public void guardarDatos() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("clientes.ser"))) {
+            out.writeObject(clientes);
         } catch (Exception e) {
-            System.out.println("Error al generar factura: " + e.getMessage());
+            System.out.println("Error al guardar clientes: " + e.getMessage());
+        }
+
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("productos.ser"))) {
+            out.writeObject(productos);
+        } catch (Exception e) {
+            System.out.println("Error al guardar productos: " + e.getMessage());
+        }
+    }
+
+    // Carga los datos desde los archivos
+    public void cargarDatos() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("clientes.ser"))) {
+            clientes = (ArrayList<Cliente>) in.readObject();
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar clientes.");
+        }
+
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("productos.ser"))) {
+            productos = (ArrayList<Producto>) in.readObject();
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar productos.");
         }
     }
 }
+
