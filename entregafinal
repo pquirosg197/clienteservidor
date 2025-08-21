@@ -1,21 +1,21 @@
 package pauloquirosgomez.avance2.avance2clienteservidor;
 
-import java.io.Serializable;
+// Clase ClienteVIP hereda de Cliente
+public class ClienteVIP extends Cliente {
 
-// Clase base que representa a un cliente normal
-public class Cliente implements Serializable {
-    protected String nombre;
-    protected String cedula;
+    private double descuento;
 
-    // Constructor que recibe nombre y cédula
-    public Cliente(String nombre, String cedula) {
-        this.nombre = nombre;
-        this.cedula = cedula;
+    // Constructor que además recibe un porcentaje de descuento
+    public ClienteVIP(String nombre, String cedula, double descuento) {
+        super(nombre, cedula); // Llamamos al constructor de la clase padre
+        this.descuento = descuento;
     }
 
-    // Método que devuelve la información del cliente (puede ser sobrescrito)
+    // Método sobrescrito (polimorfismo): muestra la info incluyendo el descuento
     public String getInfo() {
-        return "Cliente Regular - Nombre: " + nombre + ", Cédula: " + cedula;
+        return "Cliente VIP - Nombre: " + nombre + ", Cédula: " + cedula + ", Descuento: " + descuento + "%";
     }
 }
+
+
 
